@@ -1,23 +1,25 @@
-htt<template>
-  <div>
-    <form v-on:submit="ajouterRestaurant($event)">
-      <p>
-        Ajouter un restaurant à la liste => &nbsp;&nbsp;&nbsp;
-        <label>
-          Nom : <input name="nom" type="text" required v-model="nom" />
-        </label>
-        <label>
-          Cuisine :
-          <input
-            name="cuisine"
-            type="text"
-            required
-            v-model="cuisine"
-          /> </label
-        >&nbsp;
-        <button>Ajouter</button>
-      </p>
-    </form>
+<template>
+  <div class="mt-5 pt-5">
+    <b-modal id="modal-insertion" title="Renseigner un nouveau restaurant">
+      <form v-on:submit="ajouterRestaurant($event)">
+        <p>
+          Ajouter un restaurant à la liste => &nbsp;&nbsp;&nbsp;
+          <label>
+            Nom : <input name="nom" type="text" required v-model="nom" />
+          </label>
+          <label>
+            Cuisine :
+            <input
+              name="cuisine"
+              type="text"
+              required
+              v-model="cuisine"
+            /> </label
+          >&nbsp;
+          <button>Ajouter</button>
+        </p>
+      </form>
+    </b-modal>
     <p>
       Rechercher restaurant(s) dans la liste => &nbsp;&nbsp;&nbsp;
       <label
@@ -41,21 +43,36 @@ htt<template>
 
     <div>
       <!-- RESTAU AVEC VUE MATERIAL SANS TRI -->
-      <md-table class="styled-table" md-sort="name" md-sort-order="asc" md-card>
+      <md-table
+        class="w-100 styled-table"
+        md-sort="name"
+        md-sort-order="asc"
+        md-card
+      >
         <md-table-toolbar>
-          <h1 class="md-title">Restaurants: {{ nbRestauTotal }}</h1>
-          <div class="wrapper">
-            <md-button :disabled="page === 0" @click="pagePrecedente()"
-              >Précédent</md-button
-            >
-            &nbsp;&nbsp;
-            <md-button :disabled="page === nbPagesTotal" @click="pageSuivante()"
-              >Suivant</md-button
-            >
-          </div>
-          <h2 class="p-act">
-            Page actuelle: {{ page + 1 }} / {{ nbPagesTotal + 1 }}
-          </h2>
+          <b-container>
+            <b-row>
+              <b-col class="text-start my-auto">
+                <p class="my-auto">Restaurants: {{ nbRestauTotal }}</p>
+              </b-col>
+              <b-col class="text-center">
+                <md-button :disabled="page === 0" @click="pagePrecedente()"
+                  ><p class="my-auto">Précédent</p></md-button
+                >
+                &nbsp;&nbsp;
+                <md-button
+                  :disabled="page === nbPagesTotal"
+                  @click="pageSuivante()"
+                  ><p class="my-auto">Suivant</p></md-button
+                >
+              </b-col>
+              <b-col class="text-end my-auto">
+                <p class="my-auto">
+                  Page actuelle: {{ page + 1 }} / {{ nbPagesTotal + 1 }}
+                </p>
+              </b-col>
+            </b-row>
+          </b-container>
         </md-table-toolbar>
         <md-table-toolbar>
           <md-field md-clearable class="md-toolbar-section-end">
@@ -189,7 +206,6 @@ export default {
             console.log(res.msg);
             //affiche msg dans la page
             //this.msg = res.msg;
-
             //raffraichit la vue
             this.getRestaurantsFromServer();
           });
@@ -203,13 +219,10 @@ export default {
       // ou document.getElementById puisque c'est le formulaire qui a généré
       // l'événement
       let form = event.target;
-
       // Récupération des valeurs des champs du formulaire
       // en prévision d'un envoi multipart en ajax/fetch
       let donneesFormulaire = new FormData(form);
-
       let url = "http://localhost:8080/api/restaurants";
-
       fetch(url, {
         method: "POST",
         body: donneesFormulaire,
@@ -220,7 +233,6 @@ export default {
             console.log(res.msg);
             //affiche msg dans la page
             //this.msg = res.msg;
-
             //raffraichit la vue
             this.getRestaurantsFromServer;
           });
@@ -231,7 +243,6 @@ export default {
       this.nom = "";
       this.cuisine = "";
     },
-
     getColor(index) {
       return index % 2 ? "#f3f3f3" : "#c7e6f0";
     },

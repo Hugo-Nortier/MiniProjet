@@ -1,6 +1,5 @@
 table {
     border: 1px solid black;
-    width: 100%;
     border-collapse: collapse;
 }
 
@@ -21,23 +20,22 @@ input:valid {
     background-color: lightGreen;
 }
 
-.bordureRouge {
-    /*border: 2px dashed red;*/
-}
-
 #app {
     font-family: Roboto, Avenir, Helvetica, Arial, sans-serif;
     margin-left: 8em;    margin-right: 8em;
     padding-bottom: 2em;
+    min-width: 700px;
 }
 
 b{
     font-size: 20px;
-    color: #ffffff;
 }
 
 .entete{
     background-color: #009879;
+}
+.entete b{
+    color: #fff;
 }
 
 .styled-table {
@@ -52,9 +50,21 @@ h2{
     font-weight: normal;
 }
 
-.md-title, .wrapper, p.act{flex:0.50 !important;}
-
 .md-table-head-label{
     color: black;
     font-weight: bold;
 }
+
+.navbar-nav{
+    padding-left:30px;
+  }
+  a{
+    color:salmon !important
+  }
+  .nav-item{
+    border-right: 1px solid #84B6D0;}
+
+    .b-bott{
+        border-bottom: #009879 solid 5px;
+        width: 100%;
+    }
