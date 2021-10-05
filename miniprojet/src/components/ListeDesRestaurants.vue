@@ -50,13 +50,24 @@ htt<template>
             >
             &nbsp;&nbsp;
             <md-button :disabled="page === nbPagesTotal" @click="pageSuivante()"
-              >Suivantt</md-button
+              >Suivant</md-button
             >
           </div>
           <h2 class="p-act">
             Page actuelle: {{ page + 1 }} / {{ nbPagesTotal + 1 }}
           </h2>
         </md-table-toolbar>
+        <md-table-toolbar>
+          <md-field md-clearable class="md-toolbar-section-end">
+            <md-input
+              placeholder="Recherche par nom..."
+              @input="rechercherRestaurants()"
+              type="text"
+              v-model="nomRechercheRestau"
+            />
+          </md-field>
+        </md-table-toolbar>
+
         <md-table-row class="entete">
           <md-table-head><b>Nom</b></md-table-head>
           <md-table-head><b>Cuisine</b></md-table-head>
@@ -71,7 +82,9 @@ htt<template>
           <md-table-cell md-sort-by="name">{{ r.name }}</md-table-cell>
           <md-table-cell md-sort-by="cuisine">{{ r.cuisine }}</md-table-cell>
           <md-table-cell>
-            <router-link :to="'/restaurant/' +  r._id"><i class="fas fa-search-plus"></i>Voir plus</router-link>
+            <router-link :to="'/restaurant/' + r._id"
+              ><i class="fas fa-search-plus"></i>Voir plus</router-link
+            >
           </md-table-cell>
         </md-table-row>
       </md-table>
