@@ -1,6 +1,10 @@
 <template>
   <div class="mt-5 pt-5">
-    <b-modal id="modal-insertion" title="Renseigner un nouveau restaurant">
+    <b-modal 
+      id="modal-insertion"
+      title="Renseigner un nouveau restaurant"
+      ok-only
+    >
       <form v-on:submit="ajouterRestaurant($event)">
         <p>
           Ajouter un restaurant à la liste => &nbsp;&nbsp;&nbsp;
@@ -20,16 +24,18 @@
         </p>
       </form>
     </b-modal>
-    <p>
-      Rechercher restaurant(s) dans la liste => &nbsp;&nbsp;&nbsp;
-      <label
-        >Nom :
-        <input
-          @input="rechercherRestaurants()"
-          type="text"
-          v-model="nomRechercheRestau"
-      /></label>
-    </p>
+
+    <b-modal
+      v-model="modalShow"
+      id="modal-pas-de-restau"
+      title="Aucun restaurant trouvé" ok-only
+    >
+      <md-table-empty-state
+        :md-description="`Aucun restaurant ne répond à la requête: '${nomRechercheRestau}'.`"
+      >
+      </md-table-empty-state>
+    </b-modal>
+
     <p>
       Nombre de restaurants à afficher par page:
       <input
@@ -88,6 +94,8 @@
         <md-table-row class="entete">
           <md-table-head><b>Nom</b></md-table-head>
           <md-table-head><b>Cuisine</b></md-table-head>
+          <!--<md-table-head><b>Adresse</b></md-table-head>-->
+          <md-table-head><b>Ville</b></md-table-head>
           <md-table-head><b>Détails</b></md-table-head>
         </md-table-row>
 
@@ -98,6 +106,10 @@
         >
           <md-table-cell md-sort-by="name">{{ r.name }}</md-table-cell>
           <md-table-cell md-sort-by="cuisine">{{ r.cuisine }}</md-table-cell>
+          <!--<md-table-cell md-sort-by="borough">{{ r.address.building }} - {{ r.address.street }}</md-table-cell>-->
+          <md-table-cell md-sort-by="borough"
+            >{{ r.address.zipcode }} {{ r.borough }}</md-table-cell
+          >
           <md-table-cell>
             <router-link :to="'/restaurant/' + r._id"
               ><i class="fas fa-search-plus"></i>Voir plus</router-link
@@ -157,6 +169,7 @@ export default {
       nbPagesTotal: 0,
       msg: "",
       nomRechercheRestau: "",
+      modalShow: false,
     };
   },
   mounted() {
@@ -186,6 +199,10 @@ export default {
             this.restaurants = res.data;
             this.nbRestauTotal = res.count;
             this.nbPagesTotal = Math.round(this.nbRestauTotal / this.pagesize);
+            if (res.data.length < 1) {
+              this.modalShow = !this.modalShow;
+              console.log("aucun restaurant");
+            }
           });
         })
         .catch(function (err) {
@@ -193,6 +210,7 @@ export default {
         });
     },
     rechercherRestaurants: _.debounce(function () {
+      this.page = 0;
       this.getRestaurantsFromServer();
     }, 300),
     supprimerRestaurant(r) {
