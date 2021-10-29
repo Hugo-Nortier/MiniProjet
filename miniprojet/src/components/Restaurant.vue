@@ -7,15 +7,12 @@
       <li>Adresse: {{ restaurant.address.street }}</li>
       <li>Ville: {{ restaurant.address.zipcode }} {{ restaurant.borough }}</li>
       <li>
-        Dernière notation le: {{ restaurant.grades[0].date.split('T')[0] }}, note:
+        Dernière notation le: {{ restaurant.grades[0].date.split("T")[0] }},
+        note:
         {{ restaurant.grades[0].grade }}
       </li>
-      <li>
-        Coord: {{ restaurant.address.coord[0] }} 
-      </li>
+      <li>Coord: {{ restaurant.address.coord[0] }}</li>
     </ul>
-
-<iframe id="map" src="about:blank"></iframe>
 
   </div>
 </template>
@@ -46,7 +43,6 @@ export default {
         this.restaurant = data.restaurant;
       });
     //document.getElementById('map').src = 'https://maps.google.com/maps?q='+this.restaurant.address.coord[0]+','+this.restaurant.address.coord[1]+'&hl=es;z=14&amp;output=embed';
-
   },
   methods: {},
 };

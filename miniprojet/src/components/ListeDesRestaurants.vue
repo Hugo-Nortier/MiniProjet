@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5 pt-5">
-    <b-modal 
+    <b-modal
       id="modal-insertion"
       title="Renseigner un nouveau restaurant"
       ok-only
@@ -28,7 +28,8 @@
     <b-modal
       v-model="modalShow"
       id="modal-pas-de-restau"
-      title="Aucun restaurant trouvé" ok-only
+      title="Aucun restaurant trouvé"
+      ok-only
     >
       <md-table-empty-state
         :md-description="`Aucun restaurant ne répond à la requête: '${nomRechercheRestau}'.`"
@@ -156,6 +157,7 @@
 
 <script>
 import _ from "lodash";
+//import $ from "jquery";
 export default {
   name: "ListeDesRestaurants",
   data: function () {
