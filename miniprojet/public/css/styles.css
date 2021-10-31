@@ -57,14 +57,30 @@ h2{
 
 .navbar-nav{
     padding-left:30px;
-  }
-  a{
+}
+a{
     color:salmon !important
-  }
-  .nav-item{
-    border-right: 1px solid #84B6D0;}
+}
+.nav-item{
+    border-right: 1px solid #84B6D0;
+}
 
-    .b-bott{
-        border-bottom: #009879 solid 5px;
-        width: 100%;
-    }
+.b-bott{
+    border-bottom: #009879 solid 5px;
+    width: 100%;
+}
+
+.radiogroup{
+    margin-left: 25px;
+}
+
+.radiogroup input[type="radio"]{
+    margin-left: 25px;
+}
+.radiogroup label{
+    margin-left: 3px;
+}
+
+.ml{
+    margin-left: 35px;
+}

@@ -32,20 +32,22 @@
       ok-only
     >
       <md-table-empty-state
-        :md-description="`Aucun restaurant ne répond à la requête: '${nomRechercheRestau}'.`"
+        :md-description="`Aucun restaurant ne répond à la requête: '${searchtype}' = '${nomRechercheRestau}'.`"
       >
       </md-table-empty-state>
     </b-modal>
 
     <p>
       Nombre de restaurants à afficher par page:
-      <input
+      <b-form-input
         @input="getRestaurantsFromServer()"
+        v-model="pagesize"
         type="range"
         min="2"
         max="150"
-        v-model="pagesize"
-      />{{ pagesize }}
+        step="1"
+      ></b-form-input
+      > &nbsp;{{ pagesize }}
     </p>
 
     <div>
@@ -58,6 +60,40 @@
       >
         <md-table-toolbar>
           <b-container>
+            <b-row>
+              <div class="md-toolbar-section-start">
+                <p class="my-auto">Filtrer par</p>
+                <b-form-radio-group
+                  v-model="searchtype"
+                  name="searchTypeRadioGroup"
+                  class="radiogroup"
+                >
+                  <label for="one">
+                    <b-form-radio value="name" checked="checked"
+                      >Nom</b-form-radio
+                    >
+                  </label>
+                  <label for="cuisine">
+                    <b-form-radio value="cuisine">Cuisine</b-form-radio>
+                  </label>
+                  <label for="borough">
+                    <b-form-radio value="borough">Ville</b-form-radio>
+                  </label>
+                </b-form-radio-group>
+                <p class="ml my-auto">avec la valeur</p>
+              </div>
+              <md-field md-clearable class="md-toolbar-section-end">
+                <md-input
+                  placeholder="Valeur de recherche"
+                  @input="rechercherRestaurants()"
+                  type="text"
+                  v-model="nomRechercheRestau"
+                />
+              </md-field>
+            </b-row>
+          </b-container>
+          <b-container
+            ><hr />
             <b-row>
               <b-col class="text-start my-auto">
                 <p class="my-auto">Restaurants: {{ nbRestauTotal }}</p>
@@ -80,16 +116,6 @@
               </b-col>
             </b-row>
           </b-container>
-        </md-table-toolbar>
-        <md-table-toolbar>
-          <md-field md-clearable class="md-toolbar-section-end">
-            <md-input
-              placeholder="Recherche par nom..."
-              @input="rechercherRestaurants()"
-              type="text"
-              v-model="nomRechercheRestau"
-            />
-          </md-field>
         </md-table-toolbar>
 
         <md-table-row class="entete">
@@ -130,11 +156,27 @@
       >
         <md-table-toolbar>
           <div class="md-toolbar-section-start">
-            <h1 class="md-title">Restaurants triables</h1>
+            <p class="my-auto">Filtrer par</p>
+            <b-form-radio-group
+              v-model="searchtype"
+              name="searchTypeRadioGroup"
+              class="radiogroup"
+            >
+              <label for="one">
+                <b-form-radio value="name">Nom</b-form-radio>
+              </label>
+              <label for="cuisine">
+                <b-form-radio value="cuisine">Cuisine</b-form-radio>
+              </label>
+              <label for="borough">
+                <b-form-radio value="borough">Ville</b-form-radio>
+              </label>
+            </b-form-radio-group>
+            <p class="ml my-auto">avec la valeur</p>
           </div>
           <md-field md-clearable class="md-toolbar-section-end">
             <md-input
-              placeholder="Recherche par nom..."
+              placeholder="Valeur de recherche"
               @input="rechercherRestaurants()"
               type="text"
               v-model="nomRechercheRestau"
@@ -171,6 +213,7 @@ export default {
       nbPagesTotal: 0,
       msg: "",
       nomRechercheRestau: "",
+      searchtype: "",
       modalShow: false,
     };
   },
@@ -194,6 +237,7 @@ export default {
       url += "page=" + this.page;
       url += "&pagesize=" + this.pagesize;
       url += "&name=" + this.nomRechercheRestau;
+      url += "&searchtype=" + this.searchtype;
       fetch(url)
         .then((responseJSON) => {
           responseJSON.json().then((res) => {
@@ -214,6 +258,7 @@ export default {
     rechercherRestaurants: _.debounce(function () {
       this.page = 0;
       this.getRestaurantsFromServer();
+      console.log("recherche par " + this.searchtype);
     }, 300),
     supprimerRestaurant(r) {
       let url = "http://localhost:8080/api/restaurants/" + r._id;

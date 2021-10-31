@@ -111,7 +111,10 @@ app.get('/api/restaurants', (req, res) => {
 
 	let name = req.query.name || '';
 
-	const data = mongoDBModule.findRestaurants(page, pagesize, name)
+	//searchtype: borough, name, cuisine
+	//pour rechercher selon l'attribut nom, ville ou cuisine
+	let searchtype = req.query.searchtype || '';
+	const data = mongoDBModule.findRestaurants(page, pagesize, searchtype, name)
 		.then(data => {
 			res.send(JSON.stringify(data));
 		})

@@ -46,16 +46,15 @@ exports.countRestaurants = async (name) => {
 };
 
 
-exports.findRestaurants = async (page, pagesize, name) => {
+exports.findRestaurants = async (page, pagesize, searchtype, search) => {
 	let client = await MongoClient.connect(url, { useNewUrlParser: true });
 	let db = client.db(dbName);
 	let reponse;
-
 	try {
 		let restaurants;
 		let count;
 
-		if (name == '') {
+		if (search == '') {
 			restaurants = await db.collection('restaurants')
 				.find()
 				.skip(page * pagesize)
@@ -64,8 +63,28 @@ exports.findRestaurants = async (page, pagesize, name) => {
 
 			count = await db.collection('restaurants').countDocuments();
 		} else {
-			let query = {
-				"name": { $regex: ".*" + name + ".*", $options: "i" }
+			let query;
+			switch (searchtype) {
+				case 'name':
+					query = {
+						"name": { $regex: ".*" + search + ".*", $options: "i" }
+					}
+					break;
+				case 'borough':
+					query = {
+						"borough": { $regex: ".*" + search + ".*", $options: "i" }
+					}
+					break;
+				case 'cuisine':
+					query = {
+						"cuisine": { $regex: ".*" + search + ".*", $options: "i" }
+					}
+					break;
+				default:
+					query = {
+						"name": { $regex: ".*" + search + ".*", $options: "i" }
+					}
+					break;
 			}
 			restaurants = await db.collection('restaurants')
 				.find(query)
