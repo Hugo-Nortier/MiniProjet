@@ -1,26 +1,41 @@
 <template>
   <div class="hello">
-    <h1>Détail du restau n° {{ id }}</h1>
+    <h1 class="mt-5 pt-5">Détail du restau n° {{ id }}</h1>
     <ul>
-      <li>Nom: {{ restaurant.name }}</li>
-      <li>Cuisine: {{ restaurant.cuisine }}</li>
-      <li>Adresse: {{ restaurant.address.street }}</li>
-      <li>Ville: {{ restaurant.address.zipcode }} {{ restaurant.borough }}</li>
+      <li>Nom: {{ name }}</li>
+      <li>Cuisine: {{ cuisine }}</li>
+      <li>Adresse: {{ street }}</li>
+      <li>Ville: {{ zipcode }} {{ borough }}</li>
       <li>
-        Dernière notation le: {{ restaurant.grades[0].date.split("T")[0] }},
-        note:
-        {{ restaurant.grades[0].grade }}
+        Dernière notation le: {{ dategrade }}, note:
+        {{ grade }}
       </li>
-      <li>Coord: {{ restaurant.address.coord[0] }}</li>
+      <li>Coordonnées: {{ coo[1] }}, {{ coo[0] }}</li>
     </ul>
-
+    <l-map
+      :center="center"
+      :zoom="zoom"
+      class="map"
+      ref="map"
+      @update:zoom="zoomUpdated"
+      @update:center="centerUpdated"
+    >
+      <l-tile-layer :url="url"> </l-tile-layer>
+      
+    </l-map>
   </div>
 </template>
 
 <script>
+import { LMap, LTileLayer } from "vue2-leaflet";
+import "leaflet/dist/leaflet.css";
 export default {
   name: "Restaurant",
   props: {},
+  components: {
+    LMap,
+    LTileLayer,
+  },
   computed: {
     id() {
       return this.$route.params.id;
@@ -28,7 +43,17 @@ export default {
   },
   data: function () {
     return {
-      restaurant: null,
+      url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+      zoom: 13,
+      center:[0.0,0.0],
+      name: "",
+      cuisine: "",
+      street: "",
+      zipcode: "",
+      borough: "",
+      grade: "",
+      dategrade: "",
+      coo: [],
     };
   },
   mounted() {
@@ -40,14 +65,38 @@ export default {
         return reponse.json();
       })
       .then((data) => {
-        this.restaurant = data.restaurant;
+        this.name = data.restaurant.name;
+        this.cuisine = data.restaurant.cuisine;
+        this.street = data.restaurant.address.street;
+        this.zipcode = data.restaurant.address.zipcode;
+        this.borough = data.restaurant.borough;
+        this.grade = data.restaurant.grades[0];
+        this.dategrade = data.restaurant.grades[0].date.split("T")[0];
+        this.coo = data.restaurant.address.coord;
+        let c0 = this.coo[0];
+        let c1 = this.coo[1];
+        this.center = [c1, c0];
+       // this.markers[0].coordinates = [c1, c0];
       });
-    //document.getElementById('map').src = 'https://maps.google.com/maps?q='+this.restaurant.address.coord[0]+','+this.restaurant.address.coord[1]+'&hl=es;z=14&amp;output=embed';
   },
-  methods: {},
+  methods: {
+    zoomUpdated(zoom) {
+      this.zoom = zoom;
+      console.log(this.markers);
+    },
+    centerUpdated(center) {
+      this.center = center;
+    },
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.map {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  overflow: hidden;
+}
 </style>
