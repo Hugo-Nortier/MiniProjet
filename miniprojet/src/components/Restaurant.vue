@@ -1,14 +1,14 @@
 <template>
   <div class="hello">
-    <h1 class="mt-5 pt-5">Détail du restau n° {{ id }}</h1>
+    <h3 class="mt-5 pt-5">Détail du restaurant n° {{ id }}</h3>
     <ul>
       <li>Nom: {{ name }}</li>
       <li>Cuisine: {{ cuisine }}</li>
       <li>Adresse: {{ street }}</li>
       <li>Ville: {{ zipcode }} {{ borough }}</li>
       <li>
-        Dernière notation le: {{ dategrade }}, note:
-        {{ grade }}
+        Dernière notation : note =
+        {{ grade }} le: {{ dategrade }}, 
       </li>
       <li>Coordonnées: {{ coo[1] }}, {{ coo[0] }}</li>
     </ul>
@@ -21,20 +21,22 @@
       @update:center="centerUpdated"
     >
       <l-tile-layer :url="url"> </l-tile-layer>
-      
+      <l-marker :lat-lng="marker"></l-marker>
     </l-map>
   </div>
 </template>
 
 <script>
-import { LMap, LTileLayer } from "vue2-leaflet";
+import { LMap, LTileLayer, LMarker } from "vue2-leaflet";
 import "leaflet/dist/leaflet.css";
+import L from 'leaflet';
 export default {
   name: "Restaurant",
   props: {},
   components: {
     LMap,
     LTileLayer,
+    LMarker,
   },
   computed: {
     id() {
@@ -45,7 +47,7 @@ export default {
     return {
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       zoom: 13,
-      center:[0.0,0.0],
+      center: [0.0, 0.0],
       name: "",
       cuisine: "",
       street: "",
@@ -54,6 +56,7 @@ export default {
       grade: "",
       dategrade: "",
       coo: [],
+      marker: [0.0, 0.0],
     };
   },
   mounted() {
@@ -70,14 +73,22 @@ export default {
         this.street = data.restaurant.address.street;
         this.zipcode = data.restaurant.address.zipcode;
         this.borough = data.restaurant.borough;
-        this.grade = data.restaurant.grades[0];
+        this.grade = data.restaurant.grades[0].grade;
         this.dategrade = data.restaurant.grades[0].date.split("T")[0];
         this.coo = data.restaurant.address.coord;
         let c0 = this.coo[0];
         let c1 = this.coo[1];
         this.center = [c1, c0];
-       // this.markers[0].coordinates = [c1, c0];
+        this.marker = [c1, c0];
       });
+    // leaflet a, par défaut, un lien d'icone invalide, 
+    // ceci remet en place correctement l'icone.
+    delete L.Icon.Default.prototype._getIconUrl;
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+      iconUrl: require("leaflet/dist/images/marker-icon.png"),
+      shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+    });
   },
   methods: {
     zoomUpdated(zoom) {

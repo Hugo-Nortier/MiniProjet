@@ -1,5 +1,37 @@
 <template>
   <div class="mt-5 pt-5">
+    <b-navbar type="dark" variant="dark" fixed="top">
+      <b-navbar-nav>
+        <b-nav-item
+          ><router-link to="">Liste Des Restaurants</router-link></b-nav-item
+        >
+        <b-nav-item
+          ><router-link to="restaurant"
+            >Restaurant Detail</router-link
+          ></b-nav-item
+        >
+        <b-nav-item v-b-modal.modal-insertion
+          >Insérer Nouveau Restaurant</b-nav-item
+        >
+        <b-nav-item>
+          <img @click="filtrerRestau('burger')" src="../assets/burger.png" width="40px" alt="Burgers" title="Filtrer les restau qui vendent des burgers"/>
+        </b-nav-item>
+        <b-nav-item>
+          <img @click="filtrerRestau('pizza')" src="../assets/pizza.png" width="40px" alt="Pizza"  title="Filtrer les restau qui vendent des pizza"/>
+        </b-nav-item>
+        <b-nav-item>
+          <img @click="filtrerRestau('sandwich')" src="../assets/sandwich.png" width="40px" alt="Sandwich"  title="Filtrer les restau qui vendent des sandwiches"/>
+        </b-nav-item>
+        <b-nav-item>
+          <img @click="filtrerRestau('salad')" src="../assets/salad.png" width="40px" alt="Salad"  title="Filtrer les restau qui vendent des salades"/>
+        </b-nav-item>
+        <b-nav-item>
+          <img @click="filtrerRestau('donuts')" src="../assets/dessert.png" width="40px" alt="Donuts"  title="Filtrer les restau qui vendent des donuts"/>
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
+    <router-view></router-view>
+
     <b-modal
       id="modal-insertion"
       title="Renseigner un nouveau restaurant"
@@ -32,12 +64,14 @@
       ok-only
     >
       <md-table-empty-state
-        :md-description="`Aucun restaurant ne répond à la requête: '${searchtype}' = '${nomRechercheRestau}'.`"
+        :md-description="
+          `Aucun restaurant ne répond à la requête: '${searchtype}' = '${nomRechercheRestau}'.`
+        "
       >
       </md-table-empty-state>
     </b-modal>
 
-    <p>
+    <p class="pw">
       Nombre de restaurants à afficher par page:
       <b-form-input
         @input="getRestaurantsFromServer()"
@@ -46,9 +80,8 @@
         min="2"
         max="150"
         step="1"
-      ></b-form-input
-      > &nbsp;{{ pagesize }}
-    </p>
+      ></b-form-input>
+      &nbsp;{{ pagesize }}</p>
 
     <div>
       <!-- RESTAU AVEC VUE MATERIAL SANS TRI -->
@@ -202,7 +235,7 @@ import _ from "lodash";
 //import $ from "jquery";
 export default {
   name: "ListeDesRestaurants",
-  data: function () {
+  data: function() {
     return {
       restaurants: [],
       nom: "",
@@ -251,11 +284,11 @@ export default {
             }
           });
         })
-        .catch(function (err) {
+        .catch(function(err) {
           console.log(err);
         });
     },
-    rechercherRestaurants: _.debounce(function () {
+    rechercherRestaurants: _.debounce(function() {
       this.page = 0;
       this.getRestaurantsFromServer();
       console.log("recherche par " + this.searchtype);
@@ -275,9 +308,15 @@ export default {
             this.getRestaurantsFromServer();
           });
         })
-        .catch(function (err) {
+        .catch(function(err) {
           console.log(err);
         });
+    },
+    filtrerRestau(name){
+      this.searchtype="cuisine";
+      this.nomRechercheRestau = name;
+      this.page = 0;
+      this.getRestaurantsFromServer();
     },
     ajouterRestaurant(event) {
       // Récupération du formulaire. Pas besoin de document.querySelector
@@ -302,7 +341,7 @@ export default {
             this.getRestaurantsFromServer;
           });
         })
-        .catch(function (err) {
+        .catch(function(err) {
           console.log(err);
         });
       this.nom = "";
@@ -316,5 +355,4 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-</style>
+<style scoped></style>

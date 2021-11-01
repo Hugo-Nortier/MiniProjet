@@ -1,86 +1,94 @@
 table {
-    border: 1px solid black;
-    border-collapse: collapse;
+  border: 1px solid black;
+  border-collapse: collapse;
 }
 
 tr,
 td {
-    border: 1px solid black;
+  border: 1px solid black;
 }
 
 td {
-    padding: 5px;
+  padding: 5px;
 }
 
 input:invalid {
-    background-color: pink;
+  background-color: pink;
 }
 
 input:valid {
-    background-color: lightGreen;
+  background-color: lightGreen;
 }
 
 #app {
-    font-family: Roboto, Avenir, Helvetica, Arial, sans-serif;
-    margin-left: 8em;    margin-right: 8em;
-    padding-bottom: 2em;
-    min-width: 700px;
+  font-family: Roboto, Avenir, Helvetica, Arial, sans-serif;
+  margin-left: 8em;
+  margin-right: 8em;
+  padding-bottom: 2em;
+  min-width: 700px;
 }
 
-b{
-    font-size: 20px;
+b {
+  font-size: 20px;
 }
 
-.entete{
-    background-color: #009879;
+.entete {
+  background-color: #009879;
 }
-.entete b{
-    color: #fff;
+.entete b {
+  color: #fff;
 }
 
 .styled-table {
-    border-collapse: collapse;
-    margin: 25px 10px;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+  border-collapse: collapse;
+  margin: 25px 10px;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 50px rgba(0, 152, 121, 0.5) !important;
 }
-h2{
-    font-weight: normal;
-}
-
-.md-table-head-label{
-    color: black;
-    font-weight: bold;
+h2 {
+  font-weight: normal;
 }
 
-.navbar-nav{
-    padding-left:30px;
-}
-a{
-    color:salmon !important
-}
-.nav-item{
-    border-right: 1px solid #84B6D0;
+.md-table-head-label {
+  color: black;
+  font-weight: bold;
 }
 
-.b-bott{
-    border-bottom: #009879 solid 5px;
-    width: 100%;
+.navbar-nav {
+  padding-left: 30px;
+}
+a {
+  color: salmon !important;
+}
+.nav-item {
+  border-right: 1px solid #84b6d0;
 }
 
-.radiogroup{
-    margin-left: 25px;
+.b-bott {
+  border-bottom: #009879 solid 5px;
+  width: 100%;
 }
 
-.radiogroup input[type="radio"]{
-    margin-left: 25px;
-}
-.radiogroup label{
-    margin-left: 3px;
+.radiogroup {
+  margin-left: 25px;
 }
 
-.ml{
-    margin-left: 35px;
+.radiogroup input[type="radio"] {
+  margin-left: 25px;
+}
+.radiogroup label {
+  margin-left: 3px;
+}
+
+.ml {
+  margin-left: 35px;
+}
+
+body {
+  background: url("https://nortier-hugo.eu/home.jpg") fixed;
+}
+.pw{
+    color:white;
 }
