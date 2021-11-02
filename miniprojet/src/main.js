@@ -17,6 +17,7 @@ import 'leaflet/dist/leaflet.css';
 import ListeDesRestaurants from "./components/ListeDesRestaurants.vue";
 import HelloWorld from "./components/HelloWorld.vue";
 import Restaurant from "./components/Restaurant.vue";
+import InsererRestaurant from "./components/InsererRestaurant.vue";
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
@@ -35,6 +36,10 @@ const router = new VueRouter({
   {
     path: '/restaurant/:id',
     component: Restaurant
+  },
+  {
+    path: '/newRestau',
+    component: InsererRestaurant
   },
   {
     path: '/hello',

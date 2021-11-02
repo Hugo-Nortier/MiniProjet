@@ -3,30 +3,55 @@
     <b-navbar type="dark" variant="dark" fixed="top">
       <b-navbar-nav>
         <b-nav-item
-          ><router-link to="">Liste Des Restaurants</router-link></b-nav-item
+          ><router-link to="/">Liste Des Restaurants</router-link></b-nav-item
         >
         <b-nav-item
-          ><router-link to="restaurant"
-            >Restaurant Detail</router-link
-          ></b-nav-item
-        >
-        <b-nav-item v-b-modal.modal-insertion
-          >Insérer Nouveau Restaurant</b-nav-item
+          ><router-link to="/newRestau">Renseigner nouveau restaurant</router-link></b-nav-item
         >
         <b-nav-item>
-          <img @click="filtrerRestau('burger')" src="../assets/burger.png" width="40px" alt="Burgers" title="Filtrer les restau qui vendent des burgers"/>
+          <img
+            @click="filtrerRestau('burger')"
+            src="../assets/burger.png"
+            width="40px"
+            alt="Burgers"
+            title="Filtrer les restau qui vendent des burgers"
+          />
         </b-nav-item>
         <b-nav-item>
-          <img @click="filtrerRestau('pizza')" src="../assets/pizza.png" width="40px" alt="Pizza"  title="Filtrer les restau qui vendent des pizza"/>
+          <img
+            @click="filtrerRestau('pizza')"
+            src="../assets/pizza.png"
+            width="40px"
+            alt="Pizza"
+            title="Filtrer les restau qui vendent des pizza"
+          />
         </b-nav-item>
         <b-nav-item>
-          <img @click="filtrerRestau('sandwich')" src="../assets/sandwich.png" width="40px" alt="Sandwich"  title="Filtrer les restau qui vendent des sandwiches"/>
+          <img
+            @click="filtrerRestau('sandwich')"
+            src="../assets/sandwich.png"
+            width="40px"
+            alt="Sandwich"
+            title="Filtrer les restau qui vendent des sandwiches"
+          />
         </b-nav-item>
         <b-nav-item>
-          <img @click="filtrerRestau('salad')" src="../assets/salad.png" width="40px" alt="Salad"  title="Filtrer les restau qui vendent des salades"/>
+          <img
+            @click="filtrerRestau('salad')"
+            src="../assets/salad.png"
+            width="40px"
+            alt="Salad"
+            title="Filtrer les restau qui vendent des salades"
+          />
         </b-nav-item>
         <b-nav-item>
-          <img @click="filtrerRestau('donuts')" src="../assets/dessert.png" width="40px" alt="Donuts"  title="Filtrer les restau qui vendent des donuts"/>
+          <img
+            @click="filtrerRestau('donuts')"
+            src="../assets/dessert.png"
+            width="40px"
+            alt="Donuts"
+            title="Filtrer les restau qui vendent des donuts"
+          />
         </b-nav-item>
       </b-navbar-nav>
     </b-navbar>
@@ -71,7 +96,7 @@
       </md-table-empty-state>
     </b-modal>
 
-    <p class="pw">
+    <p class="pw ml-5px">
       Nombre de restaurants à afficher par page:
       <b-form-input
         @input="getRestaurantsFromServer()"
@@ -81,7 +106,8 @@
         max="150"
         step="1"
       ></b-form-input>
-      &nbsp;{{ pagesize }}</p>
+      &nbsp;{{ pagesize }}
+    </p>
 
     <div>
       <!-- RESTAU AVEC VUE MATERIAL SANS TRI -->
@@ -178,55 +204,6 @@
         </md-table-row>
       </md-table>
     </div>
-    <div>
-      <!-- RESTAU AVEC VUE MATERIAL AVEC TRI -->
-      <md-table
-        class="styled-table"
-        v-model="restaurants"
-        md-sort="name"
-        md-sort-order="asc"
-        md-card
-      >
-        <md-table-toolbar>
-          <div class="md-toolbar-section-start">
-            <p class="my-auto">Filtrer par</p>
-            <b-form-radio-group
-              v-model="searchtype"
-              name="searchTypeRadioGroup"
-              class="radiogroup"
-            >
-              <label for="one">
-                <b-form-radio value="name">Nom</b-form-radio>
-              </label>
-              <label for="cuisine">
-                <b-form-radio value="cuisine">Cuisine</b-form-radio>
-              </label>
-              <label for="borough">
-                <b-form-radio value="borough">Ville</b-form-radio>
-              </label>
-            </b-form-radio-group>
-            <p class="ml my-auto">avec la valeur</p>
-          </div>
-          <md-field md-clearable class="md-toolbar-section-end">
-            <md-input
-              placeholder="Valeur de recherche"
-              @input="rechercherRestaurants()"
-              type="text"
-              v-model="nomRechercheRestau"
-            />
-          </md-field>
-        </md-table-toolbar>
-
-        <md-table-row slot="md-table-row" slot-scope="{ item }">
-          <md-table-cell md-label="Name" md-sort-by="name">{{
-            item.name
-          }}</md-table-cell>
-          <md-table-cell md-label="Cuisine" md-sort-by="cuisine">{{
-            item.cuisine
-          }}</md-table-cell>
-        </md-table-row>
-      </md-table>
-    </div>
   </div>
 </template>
 
@@ -312,40 +289,11 @@ export default {
           console.log(err);
         });
     },
-    filtrerRestau(name){
-      this.searchtype="cuisine";
+    filtrerRestau(name) {
+      this.searchtype = "cuisine";
       this.nomRechercheRestau = name;
       this.page = 0;
       this.getRestaurantsFromServer();
-    },
-    ajouterRestaurant(event) {
-      // Récupération du formulaire. Pas besoin de document.querySelector
-      // ou document.getElementById puisque c'est le formulaire qui a généré
-      // l'événement
-      let form = event.target;
-      // Récupération des valeurs des champs du formulaire
-      // en prévision d'un envoi multipart en ajax/fetch
-      let donneesFormulaire = new FormData(form);
-      let url = "http://localhost:8080/api/restaurants";
-      fetch(url, {
-        method: "POST",
-        body: donneesFormulaire,
-      })
-        .then((responseJSON) => {
-          responseJSON.json().then((res) => {
-            // Maintenant res est un vrai objet JavaScript
-            console.log(res.msg);
-            //affiche msg dans la page
-            //this.msg = res.msg;
-            //raffraichit la vue
-            this.getRestaurantsFromServer;
-          });
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
-      this.nom = "";
-      this.cuisine = "";
     },
     getColor(index) {
       return index % 2 ? "#f3f3f3" : "#c7e6f0";

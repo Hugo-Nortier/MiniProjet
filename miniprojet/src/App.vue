@@ -5,11 +5,6 @@
         <b-nav-item
           ><router-link to="/">Liste Des Restaurants</router-link></b-nav-item
         >
-        <b-nav-item
-          ><router-link to="/restaurant"
-            >Restaurant Detail</router-link
-          ></b-nav-item
-        >
         <b-nav-item v-b-modal.modal-insertion
           >Insérer Nouveau Restaurant</b-nav-item
         >
