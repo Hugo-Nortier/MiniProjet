@@ -61,8 +61,8 @@ export default {
       street: "",
       zipcode: "",
       borough: "",
-      grade: "",
-      dategrade: "",
+      grade: "N/A",
+      dategrade: "N/A",
       coo: [],
       marker: [0.0, 0.0],
     };

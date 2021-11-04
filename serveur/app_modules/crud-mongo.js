@@ -45,7 +45,6 @@ exports.countRestaurants = async (name) => {
 	}
 };
 
-
 exports.findRestaurants = async (page, pagesize, searchtype, search) => {
 	let client = await MongoClient.connect(url, { useNewUrlParser: true });
 	let db = client.db(dbName);
@@ -57,6 +56,7 @@ exports.findRestaurants = async (page, pagesize, searchtype, search) => {
 		if (search == '') {
 			restaurants = await db.collection('restaurants')
 				.find()
+				//.sort( { borough : 1} )
 				.skip(page * pagesize)
 				.limit(pagesize)
 				.toArray();
@@ -88,6 +88,7 @@ exports.findRestaurants = async (page, pagesize, searchtype, search) => {
 			}
 			restaurants = await db.collection('restaurants')
 				.find(query)
+				.sort( { borough : 1} )
 				.skip(page * pagesize)
 				.limit(pagesize)
 				.toArray();
@@ -153,7 +154,14 @@ exports.createRestaurant = async (formData) => {
 	try {
 		let toInsert = {
 			name: formData.nom,
-			cuisine: formData.cuisine
+			cuisine: formData.cuisine,
+			borough : formData.borough,
+			address : {
+				building: formData.building,
+				coord :[parseFloat(formData.lat),parseFloat(formData.long)],
+				street : formData.street,
+				zipcode: formData.zipcode
+			}
 		};
 		let data = await db.collection("restaurants").insertOne(toInsert);
 		reponse = {

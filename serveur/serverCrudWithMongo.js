@@ -138,11 +138,25 @@ app.post('/api/restaurants', multerData.fields([]), (req, res) => {
 	// recuperer les données du formulaire d'envoi
 	// les params sont dans req.body même si le formulaire
 	// est envoyé en multipar
+	console.log(req.query)
 
-	mongoDBModule.createRestaurant(req.body)
+	mongoDBModule.createRestaurant(req.query)
 		.then(data => {
 			res.send(JSON.stringify(data));
 		});
+});
+// Creation d'un restaurant par envoi d'un formulaire
+// On fera l'insert par un POST, c'est le standard REST
+app.post('/api/restaurants', multerData.fields([]), function(req, res) {
+	// On supposera qu'on ajoutera un restaurant en 
+	// donnant son nom et sa cuisine. On va donc 
+	// recuperer les données du formulaire d'envoi
+	// les params sont dans req.body même si le formulaire
+	// est envoyé en multipart
+	console.log(req.query)
+ 	mongoDBModule.createRestaurant(req.query, function(data) {
+ 		res.send(JSON.stringify(data)); 
+ 	});
 });
 
 // Modification d'un restaurant, on fera l'update par

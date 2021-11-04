@@ -1,6 +1,6 @@
 <template>
   <div class="mt-5 pt-5">
-    <h2 class="pw">{{ msg }}</h2>
+    <h2 class="clignote">{{ msg }}</h2>
 
     <form
       novalidate
@@ -18,7 +18,7 @@
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="name">Nom du restaurant</label>
-                <md-input name="name" v-model="form.name" />
+                <md-input name="name" v-model="name" required />
               </md-field>
             </div>
           </div>
@@ -26,7 +26,7 @@
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="cuisine">Type de cuisine</label>
-                <md-input name="cuisine" v-model="form.cuisine" />
+                <md-input name="cuisine" v-model="cuisine" required />
               </md-field>
             </div>
           </div>
@@ -34,13 +34,13 @@
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="building">Numéro de rue</label>
-                <md-input name="building" v-model="form.address.building" disabled/>
+                <md-input name="building" v-model="building" required />
               </md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="street">Nom de rue</label>
-                <md-input name="street" v-model="form.address.street" disabled/>
+                <md-input name="street" v-model="street" required />
               </md-field>
             </div>
           </div>
@@ -48,13 +48,13 @@
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="zipcode">Code postal</label>
-                <md-input name="zipcode" v-model="form.address.zipcode" disabled/>
+                <md-input name="zipcode" v-model="zipcode" required />
               </md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="borough">Ville</label>
-                <md-input name="borough" v-model="form.borough" disabled/>
+                <md-input name="borough" v-model="borough" required />
               </md-field>
             </div>
           </div>
@@ -62,13 +62,13 @@
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="long">Longitude</label>
-                <md-input name="long" v-model="form.address.long" disabled/>
+                <md-input name="long" v-model="long" required />
               </md-field>
             </div>
             <div class="md-layout-item md-small-size-100">
               <md-field>
                 <label for="lat">Latitude</label>
-                <md-input name="lat" v-model="form.address.lat" disabled/>
+                <md-input name="lat" v-model="lat" required />
               </md-field>
             </div>
           </div>
@@ -86,65 +86,55 @@
 
 <script>
 export default {
-  name: "nouveauRestaurant",
   data: () => ({
-    form: {
-      nom: "",
-      cuisine: "",
-      borough: "",
-      address: {
-        building: "",
-        lat: "",
-        long: "",
-        street: "",
-        zipcode: "",
-      },
-    },
-    msg: "",
+    name: "",
+    cuisine: "",
+    borough: "",
+    lat: "",
+    long: "",
+    building: "",
+    street: "",
+    zipcode: "",
+    msg: ""
   }),
-  mounted() {
-  },
   methods: {
-    resetFormulaire() {
-        this.form.name = "";
-        this.form.cuisine = "";
-        this.form.borough = "";
-        this.form.address.building = "";
-        this.form.address.lat = "";
-        this.form.address.long = "";
-        this.form.address.street = "";
-        this.form.address.zipcode = "";
+    resetFormulaire(){
+      this.name = "";
+      this.cuisine = "";
+      this.borough = "";
+      this.building = "";
+      this.street = "";
+      this.zipcode = "";
+      this.lat = "";
+      this.long = "";
     },
-    
-    ajouterRestaurant(event) {
-      // Récupération du formulaire. Pas besoin de document.querySelector
-      // ou document.getElementById puisque c'est le formulaire qui a généré
-      // l'événement
-      let form = event.target;
-      // Récupération des valeurs des champs du formulaire
-      // en prévision d'un envoi multipart en ajax/fetch
-      let donneesFormulaire = new FormData(form);
-      let url = "http://localhost:8080/api/restaurants";
-
-      fetch(url, {
-        method: "POST",
-        body: donneesFormulaire,
-      })
-        .then((responseJSON) => {
-          responseJSON.json().then((resJS) => {
-            // Maintenant res est un vrai objet JavaScript
-            console.log(resJS.msg);
-            this.msg = resJS.msg;
-          });
-          this.resetFormulaire();
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
+    ajouterRestaurant: async function () {
+      const pms = {
+        nom: this.name,
+        cuisine: this.cuisine,
+        borough: this.borough,
+        lat: this.lat,
+        long: this.long,
+        building: this.building,
+        street: this.street,
+        zipcode: this.zipcode,
+      };
+      const url = new URL("http://localhost:8080/api/restaurants"),
+        params = pms;
+      Object.keys(params).forEach((key) =>
+        url.searchParams.append(key, params[key])
+      );
+      const res = await fetch(url, { method: "POST" });
+      this.msg = "Bravo! Vous avez ajouté le restaurant: " + this.name;
+      const json = await res.json;
+      console.log(json);
+      this.resetFormulaire();
     },
   },
 };
 </script>
 
 <style>
+.clignote {color:#00ff0d;animation: clignote 1.2s linear infinite;}
+@keyframes clignote {50% { opacity: 0.6; }}
 </style>
