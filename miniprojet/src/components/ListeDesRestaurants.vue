@@ -2,57 +2,60 @@
   <div class="mt-5 pt-5">
     <b-navbar type="dark" variant="dark" fixed="top">
       <b-navbar-nav>
-        <b-nav-item
-          ><router-link to="/">Liste Des Restaurants</router-link></b-nav-item
+        <b-nav-item to="/">Liste Des Restaurants</b-nav-item>
+        <b-nav-item-dropdown
+          text="Filtrer"
+          right
         >
-        <b-nav-item
-          ><router-link to="/newRestau">Renseigner nouveau restaurant</router-link></b-nav-item
-        >
-        <b-nav-item>
+        <b-nav-item @click="filtrerRestau('burger')">
           <img
-            @click="filtrerRestau('burger')"
             src="../assets/burger.png"
             width="40px"
             alt="Burgers"
             title="Filtrer les restau qui vendent des burgers"
-          />
+          /> Hamburger
         </b-nav-item>
-        <b-nav-item>
+        <b-nav-item @click="filtrerRestau('pizza')">
           <img
-            @click="filtrerRestau('pizza')"
             src="../assets/pizza.png"
             width="40px"
             alt="Pizza"
             title="Filtrer les restau qui vendent des pizza"
-          />
+          /> Pizza
         </b-nav-item>
-        <b-nav-item>
+        <b-nav-item @click="filtrerRestau('sandwich')">
           <img
-            @click="filtrerRestau('sandwich')"
             src="../assets/sandwich.png"
             width="40px"
             alt="Sandwich"
             title="Filtrer les restau qui vendent des sandwiches"
-          />
+          /> Sandwich
         </b-nav-item>
-        <b-nav-item>
+        <b-nav-item @click="filtrerRestau('salad')">
           <img
-            @click="filtrerRestau('salad')"
             src="../assets/salad.png"
             width="40px"
             alt="Salad"
             title="Filtrer les restau qui vendent des salades"
-          />
+          /> Salade
         </b-nav-item>
-        <b-nav-item>
+        <b-nav-item @click="filtrerRestau('donuts')">
           <img
-            @click="filtrerRestau('donuts')"
             src="../assets/dessert.png"
             width="40px"
             alt="Donuts"
             title="Filtrer les restau qui vendent des donuts"
-          />
+          /> Donuts
         </b-nav-item>
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown
+          text="Outils Admin"
+          right
+        >
+        <b-dropdown-item to="/newRestau">Renseigner nouveau restaurant</b-dropdown-item>
+        <b-dropdown-item @click="dsuppr()">
+          Supprimer restaurant</b-dropdown-item>
+        </b-nav-item-dropdown>
       </b-navbar-nav>
     </b-navbar>
     <router-view></router-view>
@@ -180,9 +183,12 @@
         <md-table-row class="entete">
           <md-table-head><b>Nom</b></md-table-head>
           <md-table-head><b>Cuisine</b></md-table-head>
-          <!--<md-table-head><b>Adresse</b></md-table-head>-->
+          <md-table-head><b>Adresse</b></md-table-head>
           <md-table-head><b>Ville</b></md-table-head>
           <md-table-head><b>Détails</b></md-table-head>
+          <md-table-head class="text-center d-none"
+            ><b>Supprimer</b></md-table-head
+          >
         </md-table-row>
 
         <md-table-row
@@ -192,7 +198,9 @@
         >
           <md-table-cell md-sort-by="name">{{ r.name }}</md-table-cell>
           <md-table-cell md-sort-by="cuisine">{{ r.cuisine }}</md-table-cell>
-          <!--<md-table-cell md-sort-by="borough">{{ r.address.building }} - {{ r.address.street }}</md-table-cell>-->
+          <md-table-cell md-sort-by="borough"
+            >{{ r.address.building }} {{ r.address.street }}</md-table-cell
+          >
           <md-table-cell md-sort-by="borough"
             >{{ r.address.zipcode }} {{ r.borough }}</md-table-cell
           >
@@ -200,6 +208,9 @@
             <router-link :to="'/restaurant/' + r._id"
               ><i class="fas fa-search-plus"></i>Voir plus</router-link
             >
+          </md-table-cell>
+          <md-table-cell class="text-center text-danger d-none">
+            <i class="fa fa-trash" @click="supprimerRestaurant(r)"></i>
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -279,21 +290,28 @@ export default {
           responseJSON.json().then((res) => {
             // Maintenant res est un vrai objet JavaScript
             console.log(res.msg);
-            //affiche msg dans la page
-            //this.msg = res.msg;
-            //raffraichit la vue
             this.getRestaurantsFromServer();
           });
         })
         .catch(function(err) {
           console.log(err);
         });
+      //raffraichit la vue
+      this.getRestaurantsFromServer();
     },
     filtrerRestau(name) {
       this.searchtype = "cuisine";
       this.nomRechercheRestau = name;
       this.page = 0;
       this.getRestaurantsFromServer();
+    },
+    dsuppr() {
+      let dnone = document.getElementsByClassName("d-none");
+      while (dnone.length > 0) {
+        Array.prototype.forEach.call(dnone, (d) => {
+          d.classList.remove("d-none");
+        });
+      }
     },
     getColor(index) {
       return index % 2 ? "#f3f3f3" : "#c7e6f0";
