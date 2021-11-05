@@ -43,7 +43,7 @@
 - [x] Mon formulaire d'insertion performant qui ne s'arrête pas simplement à renseigner un simple nom et type de cuisine
 - [x] Mes délicieux menus aléatoires avec sa carte sublimée par le CSS
 
-<u>Consultez ma [vidéo de l'explication de ces points remarquables](https://www.youtube.com/watch?v)</u>
+<u>Consultez ma [vidéo de l'explication de ces points remarquables](https://youtu.be/je9jkvKMlQA)</u>
 
 ------------
 

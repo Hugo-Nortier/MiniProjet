@@ -292,6 +292,7 @@ template {
   background-color: white;
 }
 
+/* css issu d'une template de Bootstrap mais remanié */
 .menu-classic {
   padding: 40px 15px;
   max-width: 550px;

@@ -56,7 +56,6 @@ exports.findRestaurants = async (page, pagesize, searchtype, search) => {
 		if (search == '') {
 			restaurants = await db.collection('restaurants')
 				.find()
-				//.sort( { borough : 1} )
 				.skip(page * pagesize)
 				.limit(pagesize)
 				.toArray();

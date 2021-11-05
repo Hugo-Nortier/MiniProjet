@@ -122,7 +122,8 @@ export default {
       const url = new URL("http://localhost:8080/api/restaurants"),
         params = pms;
       Object.keys(params).forEach((key) =>
-        url.searchParams.append(key, params[key])
+        url.searchParams.append(key, params[key]),
+        console.log(url)
       );
       const res = await fetch(url, { method: "POST" });
       this.msg = "Bravo! Vous avez ajouté le restaurant: " + this.name;
