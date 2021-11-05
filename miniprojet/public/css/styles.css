@@ -99,7 +99,7 @@ body {
     color:white;
 }
 
-ul{
+nav ul{
     --bs-bg-opacity: 1;
     background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
 }

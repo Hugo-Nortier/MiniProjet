@@ -12,6 +12,11 @@
       </li>
       <li>Coordonnées: {{ coo[1] }}, {{ coo[0] }}</li>
     </ul>
+    <div class="text-center mb-5">
+      <router-link :to="'/menu'"
+        ><md-button class="bg-success">Voir le menu</md-button></router-link
+      >
+    </div>
     <b-row>
       <b-col>
         <b-img id="photoRestau" src="" alt="Image du restau"></b-img>
@@ -110,15 +115,16 @@ export default {
     },
     afficherPhotoRestau() {
       let API_KEY = "24156846-4f9cb14e5661384e869013db0";
-      fetch(
-        `https://pixabay.com/api/?key=${API_KEY}&q=${this.cuisine}%20food`
-      )
+      fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${this.cuisine}%20food`)
         .then((res) => res.json())
         .then(
           (result) => {
-            if(result.hits.length>0)
-              document.getElementById("photoRestau").src=result.hits[0].previewURL;
-            else document.getElementById("photoRestau").src ="https://www.yonder.fr/sites/default/files/news/The-Peninsula-Paris__L%27Oiseau-Blanc__Restaurant.jpg";
+            if (result.hits.length > 0)
+              document.getElementById("photoRestau").src =
+                result.hits[0].previewURL;
+            else
+              document.getElementById("photoRestau").src =
+                "https://www.yonder.fr/sites/default/files/news/The-Peninsula-Paris__L%27Oiseau-Blanc__Restaurant.jpg";
           },
           (error) => {
             console.log(error);
@@ -136,7 +142,7 @@ export default {
   height: 50%;
   overflow: hidden;
 }
-#photoRestau{
+#photoRestau {
   position: absolute;
   width: 40%;
   height: 50%;

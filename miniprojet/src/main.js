@@ -15,9 +15,10 @@ import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 import ListeDesRestaurants from "./components/ListeDesRestaurants.vue";
-import HelloWorld from "./components/HelloWorld.vue";
 import Restaurant from "./components/Restaurant.vue";
 import InsererRestaurant from "./components/InsererRestaurant.vue";
+import Menu from "./components/Menu.vue";
+import Panier from "./components/Panier.vue";
 
 Vue.config.productionTip = false
 Vue.use(VueMaterial)
@@ -29,26 +30,32 @@ Vue.component('l-marker', LMarker);
 
 const router = new VueRouter({
   routes: [
-  {
-    path: '/',
-    component: ListeDesRestaurants
-  },
-  {
-    path: '/restaurant/:id',
-    component: Restaurant
-  },
-  {
-    path: '/newRestau',
-    component: InsererRestaurant
-  },
-  {
-    path: '/hello',
-    component: HelloWorld,
-    props:{
-      msg: "coucou la miage !"
+    {
+      path: '/',
+      component: ListeDesRestaurants
+    },
+    {
+      path: '/restaurant/:id',
+      component: Restaurant
+    },
+    {
+      path: '/newRestau',
+      component: InsererRestaurant
+    },
+    {
+      path: '/menu',
+      component: Menu
+    },
+    {
+      path: '/panier',
+      name: 'panier',
+      component: Panier
     }
-  }],
-  node: 'history'
+  ],
+  mode: 'history',
+  scrollBehavior() {
+    return { x: 0, y: 0 }
+  },
 })
 new Vue({
   router,
